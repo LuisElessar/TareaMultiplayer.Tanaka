@@ -17,7 +17,12 @@ public class Player : MonoBehaviourPun
     [SerializeField] private Material Jugador1;
     [SerializeField] private Material Jugador2;
 
+    [SerializeField] private GameObject bulletPrefab;
+
     private MeshRenderer meshRenderer;
+
+    private float fireRate = 0.5f;
+    private float nextFireTime = 0f;
     
     private void Awake()
     {
@@ -49,13 +54,29 @@ public class Player : MonoBehaviourPun
         {
             return;
         }
+        Move();
+        Shoot();
+    }
+
+    private void Move()
+    {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         rb.velocity = new Vector3(horizontal * speed, rb.velocity.y, vertical * speed);
-       
-        if(horizontal!=0 || vertical != 0)
+
+        if (horizontal != 0 || vertical != 0)
         {
             transform.forward = new Vector3(horizontal, 0, vertical);
+        }
+    }
+
+    private void Shoot()
+    {
+        if(Input.GetMouseButton(0) && Time.time >= nextFireTime)
+        {
+            nextFireTime = Time.time + fireRate;
+            GameObject obj = PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, Quaternion.identity);
+            obj.GetComponent<Bullet>().SetUp(transform.forward, photonView.ViewID);
         }
     }
 }
