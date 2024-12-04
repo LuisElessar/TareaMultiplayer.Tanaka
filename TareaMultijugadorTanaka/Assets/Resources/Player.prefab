@@ -103,6 +103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   playerNameText: {fileID: 1006006921088121205}
+  blueMaterial: {fileID: 2100000, guid: 042244a4686ac1f479d8f41a40119fe6, type: 2}
+  lightblueMaterial: {fileID: 2100000, guid: fe09e352dbecc734ab58199d2936532c, type: 2}
 --- !u!114 &7049494906686114491
 MonoBehaviour:
   m_ObjectHideFlags: 0

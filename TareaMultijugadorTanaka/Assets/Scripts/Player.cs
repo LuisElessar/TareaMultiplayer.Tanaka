@@ -14,6 +14,10 @@ public class Player : MonoBehaviourPun
     public static GameObject LocalInstance { get { return localInstance; } }
 
     [SerializeField] private TextMeshPro playerNameText;
+    [SerializeField] private Material blueMaterial;
+    [SerializeField] private Material lightblueMaterial;
+
+    private MeshRenderer meshRenderer;
     
     private void Awake()
     {
@@ -22,6 +26,11 @@ public class Player : MonoBehaviourPun
             localInstance = gameObject;
             playerNameText.text = GameData.playerName;
             photonView.RPC("SetName", RpcTarget.AllBuffered, GameData.playerName);
+            meshRenderer.material = blueMaterial;
+        }
+        else
+        {
+            meshRenderer.material = lightblueMaterial;
         }
         DontDestroyOnLoad(gameObject);
         rb = GetComponent<Rigidbody>();
