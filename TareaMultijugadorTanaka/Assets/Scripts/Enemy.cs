@@ -84,19 +84,18 @@ public class Enemy : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage(int damage)
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+        
         currentHealth -= damage;
-
-        Debug.Log($"Enemigo recibió {damage} de daño. Salud restante: {currentHealth}");
 
         if (currentHealth <= 0)
         {
-            Die();
+            photonView.RPC("Die", RpcTarget.All);
         }
     }
 
     private void Die()
     {
-        Debug.Log("El enemigo ha muerto.");
 
         if (PhotonNetwork.IsMasterClient)
         {

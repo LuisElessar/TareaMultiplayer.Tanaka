@@ -5,15 +5,15 @@ using Photon.Pun;
 
 public class EnemySpawner : MonoBehaviourPun
 {
-    [SerializeField] private GameObject enemyPrefab; 
-    [SerializeField] private Transform[] spawnPoints; 
-    [SerializeField] private float timeBetweenWaves = 10f; 
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private float timeBetweenWaves = 10f;
 
-    private int waveNumber = 1; 
+    private int waveNumber = 1;
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient) 
+        if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(SpawnWave());
         }
@@ -26,19 +26,23 @@ public class EnemySpawner : MonoBehaviourPun
             for (int i = 0; i < waveNumber; i++)
             {
                 SpawnEnemy();
-                yield return new WaitForSeconds(0.5f); 
+                yield return new WaitForSeconds(0.5f);
             }
             waveNumber++;
-            yield return new WaitForSeconds(timeBetweenWaves); 
+            yield return new WaitForSeconds(timeBetweenWaves);
         }
     }
 
     private void SpawnEnemy()
     {
-        int spawnIndex = Random.Range(0, spawnPoints.Length);
-        Vector3 spawnPosition = spawnPoints[spawnIndex].position;
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            int spawnIndex = Random.Range(0, spawnPoints.Length);
+            Vector3 spawnPosition = spawnPoints[spawnIndex].position;
 
-        PhotonNetwork.Instantiate(enemyPrefab.name, spawnPosition, Quaternion.identity);
+            GameObject spawnedEnemy = PhotonNetwork.Instantiate(enemyPrefab.name, spawnPosition, Quaternion.identity);
+            Debug.Log($"Enemigo generado por el Master Client en {spawnPosition}");
+        }
     }
 }
 
