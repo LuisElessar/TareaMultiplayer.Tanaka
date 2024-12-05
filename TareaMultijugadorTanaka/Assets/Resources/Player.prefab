@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3935967cd11687341b3e8452b59e5774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   playerNameText: {fileID: 1006006921088121205}
   Jugador1: {fileID: 2100000, guid: 042244a4686ac1f479d8f41a40119fe6, type: 2}
   Jugador2: {fileID: 2100000, guid: fe09e352dbecc734ab58199d2936532c, type: 2}
