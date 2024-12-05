@@ -49,8 +49,9 @@ public class Enemy : MonoBehaviourPun
                 nearestPlayer = player.transform;
             }
         }
-
         targetPlayer = nearestPlayer;
+        Debug.Log($"Atacar  a:{targetPlayer.name}");
+
     }
     private void MovetoPlayer()
     {

@@ -87,8 +87,7 @@ public class Player : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage(int damage)
     {
-        if (!photonView.IsMine) return;
-
+        Debug.Log("He recibido daño");
         currentHealth -= damage;
 
         if (currentHealth <= 0)
@@ -99,9 +98,12 @@ public class Player : MonoBehaviourPun
 
     private void Die()
     {
+        Debug.Log("Intenta morir");
+
         if (photonView.IsMine)
         {
             PhotonNetwork.Destroy(gameObject);
+            Debug.Log("Me morí");
         }
     }
 }
