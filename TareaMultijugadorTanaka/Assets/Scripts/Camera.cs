@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Camera : MonoBehaviourPun
+public class CameraFollow : MonoBehaviourPun
 {
     public Transform player; 
     public float smoothSpeed = 0.125f; 
