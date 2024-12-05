@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviourPun
     public int maxHealth = 100;
     private int currentHealth;
 
-    private Transform player;
+    private Transform targetPlayer;
 
     public float speed = 10f;
     public float damage = 10f;
@@ -19,33 +19,48 @@ public class Enemy : MonoBehaviourPun
     private void Start()
     {
         currentHealth = maxHealth;
-
-
-        if (PhotonNetwork.IsConnected && PhotonNetwork.LocalPlayer != null)
-        {
-            player = Player.LocalInstance.transform;
-        }
     }
 
     private void Update()
     {
-        if (player != null)
+        if (PhotonNetwork.IsMasterClient)
         {
-
-            MovetoPlayer();
-            TryAttackPlayer();
+            FindPlayer();
+            if (targetPlayer != null)
+            {
+                MovetoPlayer();
+                TryAttackPlayer();
+            }
         }
     }
 
+    private void FindPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float shortestDistance = Mathf.Infinity;
+        Transform nearestPlayer = null;
+
+        foreach (GameObject player in players)
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (distanceToPlayer < shortestDistance)
+            {
+                shortestDistance = distanceToPlayer;
+                nearestPlayer = player.transform;
+            }
+        }
+
+        targetPlayer = nearestPlayer;
+    }
     private void MovetoPlayer()
     {
-        Vector3 direction = (player.position - transform.position).normalized;
+        Vector3 direction = (targetPlayer.position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
     }
 
     private void TryAttackPlayer()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.position);
         if (distanceToPlayer <= attackRange && Time.time >= nextAttack)
         {
             nextAttack = Time.time + attackRate; 
@@ -56,9 +71,9 @@ public class Enemy : MonoBehaviourPun
     [PunRPC] 
     private void AttackPlayer(float damage)
     {
-        if (player != null)
+        if (targetPlayer != null)
         {
-            Player playerScript = player.GetComponent<Player>();
+            Player playerScript = targetPlayer.GetComponent<Player>();
             if (playerScript != null)
             {
                 playerScript.TakeDamage((int)damage);

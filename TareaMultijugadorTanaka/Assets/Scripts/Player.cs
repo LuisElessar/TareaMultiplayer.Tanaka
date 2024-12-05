@@ -84,6 +84,7 @@ public class Player : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
     public void TakeDamage(int damage)
     {
         if (!photonView.IsMine) return;
@@ -98,6 +99,9 @@ public class Player : MonoBehaviourPun
 
     private void Die()
     {
-        PhotonNetwork.Destroy(gameObject);
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }
