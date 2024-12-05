@@ -11,15 +11,17 @@ public class CameraFollow : MonoBehaviourPun
 
     private void Start()
     {
-        
+
         if (photonView.IsMine)
         {
-            player = GameObject.FindWithTag("Player").transform; 
+            player = transform.parent;
+            transform.parent = null;
         }
         else
         {
-            Destroy(gameObject); 
+            gameObject.SetActive(true);
         }
+  
     }
 
     private void LateUpdate()
