@@ -18,6 +18,8 @@ public class Player : MonoBehaviourPun
     [SerializeField] private Material Jugador2;
 
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private int maxHealth = 3;
+    private int currentHealth;
 
     private MeshRenderer meshRenderer;
 
@@ -41,6 +43,7 @@ public class Player : MonoBehaviourPun
 
         DontDestroyOnLoad(gameObject);
         rb = GetComponent<Rigidbody>();
+        currentHealth = maxHealth;
     }
     [PunRPC]
     public void SetName(string playerName)
@@ -56,6 +59,7 @@ public class Player : MonoBehaviourPun
         }
         Move();
         Shoot();
+
     }
 
     private void Move()
@@ -78,5 +82,22 @@ public class Player : MonoBehaviourPun
             GameObject obj = PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, Quaternion.identity);
             obj.GetComponent<Bullet>().SetUp(transform.forward, photonView.ViewID);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (!photonView.IsMine) return;
+
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        PhotonNetwork.Destroy(gameObject);
     }
 }

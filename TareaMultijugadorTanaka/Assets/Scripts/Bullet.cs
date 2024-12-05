@@ -48,4 +48,17 @@ public class Bullet : MonoBehaviourPun
         }
         rb.velocity = direction.normalized * speed;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Enemy"))
+        {
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.photonView.RPC("TakeDamage", RpcTarget.MasterClient, 20);
+            }
+            PhotonNetwork.Destroy(gameObject);
+        }
+    }
 }
