@@ -94,6 +94,7 @@ public class Enemy : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
     private void Die()
     {
 

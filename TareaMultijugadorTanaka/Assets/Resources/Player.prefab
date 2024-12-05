@@ -106,7 +106,7 @@ MonoBehaviour:
   Jugador1: {fileID: 2100000, guid: 042244a4686ac1f479d8f41a40119fe6, type: 2}
   Jugador2: {fileID: 2100000, guid: fe09e352dbecc734ab58199d2936532c, type: 2}
   bulletPrefab: {fileID: 5673824674196083827, guid: 90f8332b1683f8645b77df72778fffdb, type: 3}
-  maxHealth: 3
+  maxHealth: 5
 --- !u!114 &7049494906686114491
 MonoBehaviour:
   m_ObjectHideFlags: 0
